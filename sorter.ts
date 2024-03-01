@@ -1,4 +1,8 @@
 const collator: Intl.Collator = new Intl.Collator("en", { numeric: true, sensitivity: "base" });
+/**
+ * Represents a type that can be sorted.
+ * @typedef {string | number | boolean | Date | null} Sortable
+ */
 type Sortable = string | number | boolean | Date | null;
 /**
  * Sorts two values of type string, number, or Date.
