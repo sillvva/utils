@@ -3,4 +3,6 @@
  * @module
  */
 
+export * from "./slugify";
 export * from "./sorter";
+
