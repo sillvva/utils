@@ -5,7 +5,7 @@ const collator: Intl.Collator = new Intl.Collator("en", { numeric: true, sensiti
  */
 type Sortable = string | number | boolean | Date | null;
 /**
- * Sorts two values of type string, number, or Date.
+ * Used as a comparator function for sorting arrays of strings, numbers, booleans, and dates.
  *
  * @param a {string | number | boolean | Date | null | undefined} - The first value to compare.
  * @param b {string | number | boolean | Date | null | undefined} - The second value to compare.
