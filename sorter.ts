@@ -22,7 +22,6 @@ type Sortable = string | number | boolean | Date | null;
 export const sorter = (a?: Sortable, b?: Sortable): number => {
 	if (typeof a === "boolean" || a === null || a === undefined) a = a ? 0 : 1;
 	if (typeof b === "boolean" || b === null || b === undefined) b = b ? 0 : 1;
-	if (a instanceof Date && b instanceof Date) return a.getTime() - b.getTime();
 	if (a instanceof Date) a = a.getTime();
 	if (b instanceof Date) b = b.getTime();
 	if (typeof a === "string" && typeof b === "string") return collator.compare(a, b);
