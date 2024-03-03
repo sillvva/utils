@@ -6,17 +6,24 @@ const collator: Intl.Collator = new Intl.Collator("en", { numeric: true, sensiti
 type Sortable = string | number | boolean | Date | null;
 /**
  * Used as a comparator function for sorting arrays of strings, numbers, booleans, and dates.
+ * @module
  *
  * @param a {string | number | boolean | Date | null | undefined} - The first value to compare.
  * @param b {string | number | boolean | Date | null | undefined} - The second value to compare.
  * @returns {number} A negative number if `a` is less than `b`, a positive number if `a` is greater than `b`, or 0 if they are equal.
  *
- * @example
- * ```javascript
+ * @example Sorting primitives
+ * ```typescript
  * const fruits = ["apple", "Banana", "Orange", "banana"];
- * fruits.sort(sorter);
- * console.log(fruits);
- * // Output: ["apple", "banana", "Banana", "Orange"]
+ * const sorted = fruits.sort(sorter);
+ * console.log(sorted); // ["apple", "banana", "Banana", "Orange"]
+ * ```
+ * 
+ * @example Sorting objects
+ * ```typescript
+ * const arrObjs = [{ id: 3 }, { id: 1 }, { id: 2 }];
+ * const sortedObjs = arrObjs.sort((a, b) => sorter(a.id, b.id));
+ * console.log(sortedObjs); // [{ id: 1 }, { id: 2 }, { id: 3 }]
  * ```
  */
 export const sorter = (a?: Sortable, b?: Sortable): number => {

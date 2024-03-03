@@ -1,6 +1,7 @@
 {
   "name": "@sillvva/utils",
-  "version": "0.2.1",
+  "version": "0.2.2",
+  "description": "A collection of utility functions",
   "exports": {
     ".": "./index.ts",
     "./sorter": "./sorter.ts",

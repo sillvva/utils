@@ -1,7 +1,15 @@
 /**
  * Converts a given text into a slug.
+ * @module
+ * 
  * @param text {string} - The text to be slugified.
  * @returns {string} The slugified version of the text.
+ * 
+ * @example
+ * ```typescript
+ * const slug = slugify("Hello World");
+ * console.log(slug); // hello-world
+ * ```
  */
 export function slugify(text: string): string {
 	return text
