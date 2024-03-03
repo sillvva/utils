@@ -1,6 +1,10 @@
 /**
  * Converts a given text into a slug.
  * @module
+ */
+
+/**
+ * Converts a given text into a slug.
  * 
  * @param text {string} - The text to be slugified.
  * @returns {string} The slugified version of the text.
