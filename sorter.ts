@@ -33,8 +33,12 @@ type Sortable = string | number | boolean | Date | null;
  * ```
  */
 export function sorter(a?: Sortable, b?: Sortable): number {
-	if (typeof a === "boolean" || a === null || a === undefined) a = a ? 0 : 1;
-	if (typeof b === "boolean" || b === null || b === undefined) b = b ? 0 : 1;
+	if (a === null || a === undefined) a = a ? a : Infinity;
+	if (b === null || b === undefined) b = b ? b : Infinity;
+	if (typeof a === "boolean" && typeof b !== "boolean") b = !!b;
+	if (typeof b === "boolean" && typeof a !== "boolean") a = !!a;
+	if (typeof a === "boolean") a = a ? 0 : Infinity;
+	if (typeof b === "boolean") b = b ? 0 : Infinity
 	if (a instanceof Date) a = a.getTime();
 	if (b instanceof Date) b = b.getTime();
 	if (typeof a === "number" && typeof b === "number") return a - b;
