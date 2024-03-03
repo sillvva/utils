@@ -1,6 +1,12 @@
 /**
  * Converts a given text into a slug.
  * @module
+ * 
+ * @example
+ * ```typescript
+ * const slug = slugify("Hello World");
+ * console.log(slug); // hello-world
+ * ```
  */
 
 /**

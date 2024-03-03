@@ -1,6 +1,20 @@
 /**
  * Used as a comparator function for sorting arrays of strings, numbers, booleans, and dates.
  * @module
+ *
+ * @example Sorting primitives
+ * ```typescript
+ * const fruits = ["apple", "Banana", "Orange", "banana"];
+ * const sorted = fruits.sort(sorter);
+ * console.log(sorted); // ["apple", "banana", "Banana", "Orange"]
+ * ```
+ * 
+ * @example Sorting objects
+ * ```typescript
+ * const arrObjs = [{ id: 3 }, { id: 1 }, { id: 2 }];
+ * const sortedObjs = arrObjs.sort((a, b) => sorter(a.id, b.id));
+ * console.log(sortedObjs); // [{ id: 1 }, { id: 2 }, { id: 3 }]
+ * ```
  */
 
 /**
@@ -32,7 +46,7 @@ type Sortable = string | number | boolean | Date | null;
  * console.log(sortedObjs); // [{ id: 1 }, { id: 2 }, { id: 3 }]
  * ```
  */
-export const sorter = (a?: Sortable, b?: Sortable): number => {
+export function sorter(a?: Sortable, b?: Sortable): number {
 	if (typeof a === "boolean" || a === null || a === undefined) a = a ? 0 : 1;
 	if (typeof b === "boolean" || b === null || b === undefined) b = b ? 0 : 1;
 	if (a instanceof Date) a = a.getTime();
