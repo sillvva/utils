@@ -24,6 +24,6 @@
  * ```
  */
 
-export * from "./slugify";
-export * from "./sorter";
+export * from "./slugify.ts";
+export * from "./sorter.ts";
 
