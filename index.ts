@@ -24,6 +24,7 @@
  * ```
  */
 
+export * from "./abortable.ts";
 export * from "./slugify.ts";
 export * from "./sorter.ts";
 

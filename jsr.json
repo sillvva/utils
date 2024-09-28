@@ -1,9 +1,10 @@
 {
   "name": "@sillvva/utils",
-  "version": "0.2.7",
+  "version": "0.3.0",
   "exports": {
     ".": "./index.ts",
     "./sorter": "./sorter.ts",
-    "./slugify": "./slugify.ts"
+    "./slugify": "./slugify.ts",
+    "./abortable": "./abortable.ts"
   }
 }
