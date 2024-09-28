@@ -6,5 +6,6 @@
     "./sorter": "./sorter.ts",
     "./slugify": "./slugify.ts",
     "./abortable": "./abortable.ts"
-  }
+  },
+  "license": "MIT"
 }
