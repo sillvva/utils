@@ -16,7 +16,7 @@ type Sortable = string | number | boolean | Date | null;
  *
  * @param a {string | number | boolean | Date | null | undefined} - The first value to compare.
  * @param b {string | number | boolean | Date | null | undefined} - The second value to compare.
- * @returns {number} A negative number if `a` is less than `b`, a positive number if `a` is greater than `b`, or 0 if they are equal.
+ * @returns {number} A negative number if `a` is less than `b`, a positive number if `a` is greater than `b`, or zero if they are equal.
  *
  * @example Sorting primitives
  * ```typescript
