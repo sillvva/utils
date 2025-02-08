@@ -1,5 +1,5 @@
 /**
- * Used as a comparator function for sorting arrays of strings, numbers, booleans, and dates.
+ * A comparator function for sorting arrays of strings, numbers, booleans, and dates.
  * @module
  */
 
@@ -21,28 +21,24 @@ type Sortable = string | number | boolean | Date | null;
  * @example Sorting primitives
  * ```typescript
  * const fruits = ["apple", "Banana", "Orange", "banana"];
- * const sorted = fruits.sort(sorter);
+ * const sorted = fruits.toSorted(sorter);
  * console.log(sorted); // ["apple", "banana", "Banana", "Orange"]
  * ```
  * 
  * @example Sorting objects
  * ```typescript
  * const arrObjs = [{ id: 3 }, { id: 1 }, { id: 2 }];
- * const sortedObjs = arrObjs.sort((a, b) => sorter(a.id, b.id));
+ * const sortedObjs = arrObjs.toSorted((a, b) => sorter(a.id, b.id));
  * console.log(sortedObjs); // [{ id: 1 }, { id: 2 }, { id: 3 }]
  * ```
  */
 export function sorter(a?: Sortable, b?: Sortable): number {
+	if (a === b) return 0;
 	if (a === null || a === undefined) a = Infinity;
 	if (b === null || b === undefined) b = Infinity;
 	if (typeof a === "boolean" && typeof b !== "boolean") b = !!b;
 	if (typeof b === "boolean" && typeof a !== "boolean") a = !!a;
 	if (typeof a === "boolean") a = a ? 0 : Infinity;
 	if (typeof b === "boolean") b = b ? 0 : Infinity;
-	if (a instanceof Date) a = a.getTime();
-	if (b instanceof Date) b = b.getTime();
-	if (typeof a === "number" && typeof b === "number") return a - b;
-	if (b === Infinity) return -1;
-	if (a === Infinity) return 1;
 	return collator.compare(a.toString(), b.toString());
 }
