@@ -40,5 +40,7 @@ export function sorter(a?: Sortable, b?: Sortable): number {
 	if (typeof b === "boolean" && typeof a !== "boolean") a = !!a;
 	if (typeof a === "boolean") a = a ? 0 : Infinity;
 	if (typeof b === "boolean") b = b ? 0 : Infinity;
+	if (a instanceof Date) a = a.getTime();
+	if (b instanceof Date) b = b.getTime();
 	return collator.compare(a.toString(), b.toString());
 }
