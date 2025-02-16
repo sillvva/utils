@@ -34,12 +34,10 @@ type Sortable = string | number | boolean | Date | null;
  */
 export function sorter(a?: Sortable, b?: Sortable): number {
 	if (a === b) return 0;
-	if (a === null || a === undefined) a = Infinity;
-	if (b === null || b === undefined) b = Infinity;
-	if (typeof a === "boolean" && typeof b !== "boolean") b = !!b;
-	if (typeof b === "boolean" && typeof a !== "boolean") a = !!a;
-	if (typeof a === "boolean") a = a ? 0 : Infinity;
-	if (typeof b === "boolean") b = b ? 0 : Infinity;
+	if (a === false && (b === null || b === undefined)) return -1;
+	if (b === false && (a === null || a === undefined)) return 1;
+	if (a === null || a === undefined || typeof a === "boolean") a = !!a ? 0 : Infinity;
+	if (b === null || b === undefined || typeof b === "boolean") b = !!b ? 0 : Infinity;
 	if (a instanceof Date) a = a.getTime();
 	if (b instanceof Date) b = b.getTime();
 	return collator.compare(a.toString(), b.toString());
