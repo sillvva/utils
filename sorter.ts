@@ -19,18 +19,14 @@ type Sortable = string | number | boolean | Date | null;
  * @returns {number} A negative number if `a` is less than `b`, a positive number if `a` is greater than `b`, or zero if they are equal.
  *
  * @example Sorting primitives
- * ```typescript
  * const fruits = ["apple", "Banana", "Orange", "banana"];
  * const sorted = fruits.toSorted(sorter);
  * console.log(sorted); // ["apple", "banana", "Banana", "Orange"]
- * ```
  * 
  * @example Sorting objects
- * ```typescript
  * const arrObjs = [{ id: 3 }, { id: 1 }, { id: 2 }];
  * const sortedObjs = arrObjs.toSorted((a, b) => sorter(a.id, b.id));
  * console.log(sortedObjs); // [{ id: 1 }, { id: 2 }, { id: 3 }]
- * ```
  */
 export function sorter(a?: Sortable, b?: Sortable): number {
 	if (a === b) return 0;

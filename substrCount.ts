@@ -12,16 +12,13 @@
  * @returns The number of occurrences found
  * 
  * @example Basic usage
- * ```ts
  * import { substrCount } from "@sillvva/utils";
  * 
  * const text = "hello world hello";
  * const count = substrCount(text, "hello");
  * console.log(count); // 2
- * ```
  * 
  * @example With overlapping matches
- * ```ts
  * import { substrCount } from "@sillvva/utils";
  * 
  * const text = "aaaa";
@@ -29,10 +26,8 @@
  * const overlapping = substrCount(text, "aa", true);
  * console.log(nonOverlapping); // 2
  * console.log(overlapping); // 3
- * ```
  * 
  * @example Edge cases
- * ```ts
  * import { substrCount } from "@sillvva/utils";
  * 
  * // Empty substring returns string length + 1
@@ -40,7 +35,6 @@
  * 
  * // No matches found
  * console.log(substrCount("hello", "xyz")); // 0
- * ```
  */
 export function substrCount(string: string, subString: string, allowOverlapping = false): number {
 	string += "";

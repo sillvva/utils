@@ -10,10 +10,8 @@
  * @returns {string} The slugified version of the text.
  * 
  * @example
- * ```typescript
  * const slug = slugify("Hello World");
  * console.log(slug); // hello-world
- * ```
  */
 export function slugify(text: string): string {
 	return text

@@ -12,19 +12,17 @@
  * @returns {AbortablePromise<T>} The abortable promise.
  * 
  * @example
- * ```typescript
  * const promise = new AbortablePromise((resolve, reject) => {
- * 	setTimeout(() => {
- * 		resolve("Hello World");
- * 	}, 1000);
+ *  	setTimeout(() => {
+ * 	 	  resolve("Hello World");
+ * 	 }, 1000);
  * }, { signal: AbortSignal.timeout(500) });
  * 
  * promise.then((result) => {
- * 	console.log(result); // Hello World
+ * 	 console.log(result); // Hello World
  * }).catch((error) => {
- * 	console.log(error); // Error: The operation was aborted.
+ * 	 console.log(error); // Error: The operation was aborted.
  * });
- * ```
  */ 
 export class AbortablePromise<T> extends Promise<T> {
 	constructor(executor: (resolve: (value: T | PromiseLike<T>) => void, reject: (reason?: any) => void) => void, options?: { signal?: AbortSignal }) {

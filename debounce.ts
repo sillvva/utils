@@ -1,11 +1,15 @@
 /**
  * Creates a debounced version of a function that delays execution until after a specified delay
+ * @module
+ */
+
+/**
+ * Creates a debounced version of a function that delays execution until after a specified delay
  * @param fn The function to debounce
  * @param ms The delay in milliseconds
  * @returns An object with call and cancel methods
  * 
  * @example Basic usage
- * ```typescript
  * import { debounce } from "@sillvva/utils";
  * 
  * const debouncedFn = debounce((text: string) => {
@@ -19,10 +23,8 @@
  * debouncedFn.call("abc").then(result => {
  *   console.log(result); // "Results for abc"
  * });
- * ```
  * 
  * @example With cancellation
- * ```typescript
  * import { debounce } from "@sillvva/utils";
  * 
  * const debouncedFn = debounce(() => console.log("Executed!"), 1000);
@@ -31,7 +33,6 @@
  * // Cancel before execution
  * setTimeout(() => debouncedFn.cancel(), 500);
  * // "Executed!" will never be logged
- * ```
  */
 export function debounce<A = unknown, R = void>(fn: (args: A) => R, ms: number): {
 	call: (args: A) => Promise<R>;
