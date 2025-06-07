@@ -42,7 +42,7 @@
  * console.log(substrCount("hello", "xyz")); // 0
  * ```
  */
-export function substrCount(string: string, subString: string, allowOverlapping = false) {
+export function substrCount(string: string, subString: string, allowOverlapping = false): number {
 	string += "";
 	subString += "";
 	if (subString.length <= 0) return string.length + 1;
