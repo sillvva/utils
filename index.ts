@@ -1,6 +1,23 @@
 /**
- * A module containing general purpose utility functions
+ * A module containing general purpose utility functions and types
  * @module
+ * 
+ * @example Abortable Promise
+ * ```typescript
+ * import { AbortablePromise } from "@sillvva/utils";
+ * 
+ * const promise = new AbortablePromise((resolve, reject) => {
+ * 	setTimeout(() => {
+ * 		resolve("Hello World");
+ * 	}, 1000);
+ * }, { signal: AbortSignal.timeout(500) });
+ * 
+ * promise.then((result) => {
+ * 	console.log(result); // Hello World
+ * }).catch((error) => {
+ * 	console.log(error); // Error: The operation was aborted.
+ * });
+ * ```
  * 
  * @example Slugify
  * ```typescript
@@ -23,23 +40,50 @@
  * console.log(sortedObjs); // [{ id: 1 }, { id: 2 }, { id: 3 }]
  * ```
  * 
- * @example Abortable Promise
+ * @example Substring Count
  * ```typescript
- * const promise = new AbortablePromise((resolve, reject) => {
- * 	setTimeout(() => {
- * 		resolve("Hello World");
- * 	}, 1000);
- * }, { signal: AbortSignal.timeout(500) });
+ * import { substrCount } from "@sillvva/utils";
  * 
- * promise.then((result) => {
- * 	console.log(result); // Hello World
- * }).catch((error) => {
- * 	console.log(error); // Error: The operation was aborted.
- * });
+ * const text = "hello world hello";
+ * const count = substrCount(text, "hello");
+ * console.log(count); // 2
+ * 
+ * // With overlapping matches
+ * const overlapping = substrCount("aaaa", "aa", true);
+ * console.log(overlapping); // 3
+ * ```
+ * 
+ * @example Utility Types
+ * ```typescript
+ * import type { MapKeys, Prettify, Falsy, DictOrArray } from "@sillvva/utils";
+ * 
+ * // MapKeys - Extract key type from Map
+ * type MyMap = Map<string, number>;
+ * type Keys = MapKeys<MyMap>; // string
+ * 
+ * // Prettify - Flatten intersection types
+ * type Ugly = { a: string } & { b: number };
+ * type Pretty = Prettify<Ugly>; // { a: string; b: number }
+ * 
+ * // Falsy - Type guard for falsy values
+ * function isFalsy(value: unknown): value is Falsy {
+ *   return !value;
+ * }
+ * 
+ * // DictOrArray - Handle objects or arrays
+ * function processData(data: DictOrArray) {
+ *   if (Array.isArray(data)) {
+ *     console.log("Processing array with", data.length, "items");
+ *   } else {
+ *     console.log("Processing object with keys:", Object.keys(data));
+ *   }
+ * }
  * ```
  */
 
 export * from "./abortable.ts";
 export * from "./slugify.ts";
 export * from "./sorter.ts";
+export * from "./substrCount.ts";
+export * from "./types.ts";
 

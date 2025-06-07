@@ -1,11 +1,13 @@
 {
   "name": "@sillvva/utils",
-  "version": "0.3.4",
+  "version": "0.4.0",
   "exports": {
     ".": "./index.ts",
-    "./sorter": "./sorter.ts",
+    "./abortable": "./abortable.ts",
     "./slugify": "./slugify.ts",
-    "./abortable": "./abortable.ts"
+    "./sorter": "./sorter.ts",
+    "./substrCount": "./substrCount.ts",
+    "./types": "./types.ts"
   },
   "license": "MIT"
 }
