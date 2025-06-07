@@ -19,6 +19,30 @@
  * });
  * ```
  * 
+ * @example Debounce
+ * ```typescript
+ * import { debounce } from "@sillvva/utils";
+ * 
+ * const debouncedSearch = debounce((query: string) => {
+ *   console.log("Searching for:", query);
+ *   return `Results for ${query}`;
+ * }, 300);
+ * 
+ * // Only the last call executes after 300ms
+ * debouncedSearch.call("hello").then(result => {
+ *   console.log(result); // "Results for hello"
+ * });
+ * ```
+ * 
+ * @example isDefined
+ * ```typescript
+ * import { isDefined } from "@sillvva/utils";
+ * 
+ * const values = [1, null, 2, undefined, 3]; // (number | null | undefined)[]
+ * const defined = values.filter(isDefined); // number[]
+ * console.log(defined); // [1, 2, 3]
+ * ```
+ * 
  * @example Slugify
  * ```typescript
  * import { slugify } from "@sillvva/utils";
@@ -53,6 +77,17 @@
  * console.log(overlapping); // 3
  * ```
  * 
+ * @example Wait
+ * ```typescript
+ * import { wait } from "@sillvva/utils";
+ * 
+ * async function example() {
+ *   console.log("Starting...");
+ *   await wait(1000);
+ *   console.log("1 second later!");
+ * }
+ * ```
+ * 
  * @example Utility Types
  * ```typescript
  * import type { MapKeys, Prettify, Falsy, DictOrArray } from "@sillvva/utils";
@@ -82,8 +117,11 @@
  */
 
 export * from "./abortable.ts";
+export * from "./debounce.ts";
+export * from "./isDefined.ts";
 export * from "./slugify.ts";
 export * from "./sorter.ts";
 export * from "./substrCount.ts";
 export * from "./types.ts";
+export * from "./wait.ts";
 
