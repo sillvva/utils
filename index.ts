@@ -43,6 +43,24 @@
  * console.log(defined); // [1, 2, 3]
  * ```
  * 
+ * @example isOneOf
+ * ```typescript
+ * import { isOneOf } from "@sillvva/utils";
+ * 
+ * // before ❌
+ * function checkFruits(fruit: string) {
+ * 	if (["apple", "banana", "orange"].includes(fruit)) {
+ * 		console.log(fruit); // string
+ * 	}
+ * }
+ * 
+ * // after ✅
+ * function checkFruits(fruit: string) {
+ * 	if (isOneOf(fruit, ["apple", "banana", "orange"])) {
+ * 		console.log(fruit); // "apple" | "banana" | "orange"
+ * 	}
+ * }
+ * ```
  * @example Slugify
  * ```typescript
  * import { slugify } from "@sillvva/utils";
@@ -119,6 +137,7 @@
 export * from "./abortable.ts";
 export * from "./debounce.ts";
 export * from "./isDefined.ts";
+export * from "./isOneOf.ts";
 export * from "./slugify.ts";
 export * from "./sorter.ts";
 export * from "./substrCount.ts";
