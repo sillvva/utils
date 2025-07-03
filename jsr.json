@@ -1,8 +1,8 @@
 {
-  "name": "@sillvva/utils",
-  "version": "0.5.2",
-  "exports": {
-    ".": "./index.ts"
-  },
-  "license": "MIT"
+	"name": "@sillvva/utils",
+	"version": "0.5.3",
+	"exports": {
+		".": "./entry.ts"
+	},
+	"license": "MIT"
 }
