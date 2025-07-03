@@ -1,6 +1,6 @@
 {
 	"name": "@sillvva/utils",
-	"version": "0.5.4",
+	"version": "0.5.5",
 	"description": "A module containing general purpose utility functions and types.",
 	"author": "Matt DeKok",
 	"license": "MIT",
@@ -27,8 +27,8 @@
 	"homepage": "https://github.com/sillvva/utils#readme",
 	"exports": {
 		".": {
-			"types": "./dist/entry.d.ts",
-			"default": "./dist/entry.js"
+			"types": "./dist/index.d.ts",
+			"default": "./dist/index.js"
 		}
 	},
 	"files": [
