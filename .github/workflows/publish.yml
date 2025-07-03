@@ -15,5 +15,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Install dependencies
+        run: npm install --frozen-lockfile
+
+      - name: Run tests
+        run: npm test
+
       - name: Publish package
         run: npx jsr publish
