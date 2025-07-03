@@ -1,12 +1,40 @@
 {
 	"name": "@sillvva/utils",
 	"version": "0.5.4",
+	"description": "A module containing general purpose utility functions and types.",
+	"author": "Matt DeKok",
+	"license": "MIT",
+	"scripts": {
+		"build": "tsup",
+		"dev": "tsup --watch",
+		"link": "npm build && npm link",
+		"clean": "rm -rf dist",
+		"prepublishOnly": "npm install --frozen-lockfile && npm build",
+		"typecheck": "tsc --noEmit",
+		"test": "jest"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/sillvva/utils.git",
+		"directory": "."
+	},
+	"bugs": {
+		"url": "https://github.com/sillvva/utils/issues"
+	},
+	"homepage": "https://github.com/sillvva/utils#readme",
+	"exports": {
+		".": {
+			"types": "./dist/entry.d.ts",
+			"default": "./dist/entry.js"
+		}
+	},
+	"files": [
+		"dist"
+	],
 	"devDependencies": {
 		"@types/jest": "^30.0.0",
 		"jest": "^30.0.4",
-		"ts-jest": "^29.4.0"
-	},
-	"scripts": {
-		"test": "jest"
+		"ts-jest": "^29.4.0",
+		"tsup": "^8.5.0"
 	}
 }
