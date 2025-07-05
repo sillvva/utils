@@ -43,4 +43,4 @@ export type Falsy = false | 0 | "" | null | undefined;
  *   }
  * }
  */
-export type DictOrArray = Record<PropertyKey, unknown> | Array<unknown>;
+export type DictOrArray = Record<PropertyKey, any> | Array<any>;
