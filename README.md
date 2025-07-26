@@ -59,6 +59,34 @@ const defined = values.filter(isDefined); // number[]
 console.log(defined); // [1, 2, 3]
 ```
 
+### isInstanceOfClass
+
+```typescript
+import { isInstanceOfClass } from "@sillvva/utils";
+
+class User {
+	constructor(public name: string) {}
+}
+
+const user = new User("John");
+const plainObj = { name: "Jane" };
+
+// Check specific class
+console.log(isInstanceOfClass(user, User)); // true
+console.log(isInstanceOfClass(plainObj, User)); // false
+
+// Check for any class instance
+console.log(isInstanceOfClass(user)); // true
+console.log(isInstanceOfClass(plainObj)); // false
+
+// Type narrowing
+function processUser(data: unknown) {
+	if (isInstanceOfClass(data, User)) {
+		console.log(data.name); // TypeScript knows data is User
+	}
+}
+```
+
 ### isOneOf
 
 ```typescript

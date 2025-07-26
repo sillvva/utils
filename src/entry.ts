@@ -1,6 +1,7 @@
 export * from "./abortable";
 export * from "./debounce";
 export * from "./isDefined";
+export * from "./isInstanceOfClass";
 export * from "./isOneOf";
 export * from "./slugify";
 export * from "./sorter";
