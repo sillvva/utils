@@ -107,6 +107,22 @@ function checkFruits(fruit: string) {
 }
 ```
 
+### Omit
+
+```typescript
+import { omit } from "@sillvva/utils";
+
+const user = { id: 1, name: "Jane", email: "jane@example.com" };
+const safe = omit(user, ["email"]);
+console.log(safe); // { id: 1, name: "Jane" }
+
+// Strongly typed keys
+type User = { id: number; name: string; email: string };
+const u: User = { id: 1, name: "Jane", email: "jane@example.com" };
+const withoutEmail = omit(u, ["email"] as const);
+// withoutEmail is typed as { id: number; name: string }
+```
+
 ### Slugify
 
 ```typescript

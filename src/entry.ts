@@ -3,6 +3,7 @@ export * from "./debounce";
 export * from "./isDefined";
 export * from "./isInstanceOfClass";
 export * from "./isOneOf";
+export * from "./omit";
 export * from "./slugify";
 export * from "./sorter";
 export * from "./substrCount";
