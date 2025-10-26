@@ -1,6 +1,6 @@
 {
 	"name": "@sillvva/utils",
-	"version": "0.6.0",
+	"version": "0.7.0",
 	"description": "A module containing general purpose utility functions and types.",
 	"author": "Matt DeKok",
 	"license": "MIT",
