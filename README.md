@@ -49,6 +49,21 @@ debouncedSearch.call("hello").then((result) => {
 });
 ```
 
+### deepEqual
+
+```typescript
+import { deepEqual } from "@sillvva/utils";
+
+// Deep compare of primitives, arrays, objects, maps, sets, dates, and regexps:
+console.log(deepEqual({ a: 1, b: [2, 3] }, { b: [2, 3], a: 1 })); // true
+console.log(deepEqual([1, 2, 3], [1, 2, 3])); // true
+console.log(deepEqual(new Set([1, 2]), new Set([2, 1]))); // true
+console.log(deepEqual(new Map([["x", 1]]), new Map([["x", 1]]))); // true
+
+// Not equal when structure or values differ:
+console.log(deepEqual({ foo: 1 }, { foo: 2 })); // false
+```
+
 ### isDefined
 
 ```typescript
