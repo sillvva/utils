@@ -34,23 +34,23 @@
  * setTimeout(() => debouncedFn.cancel(), 500);
  * // "Executed!" will never be logged
  */
-export function debounce<A = unknown, R = void>(
-	fn: (args: A) => R,
+export function debounce<Args extends any[], R = void>(
+	fn: (...args: Args) => R,
 	ms: number
 ): {
-	call: (args: A) => Promise<R>;
+	call: (...args: Args) => Promise<R>;
 	cancel: () => void;
 } {
 	let timer: ReturnType<typeof setTimeout>;
 
-	const call = (args: A): Promise<R> =>
+	const call = (...args: Args): Promise<R> =>
 		new Promise((resolve) => {
 			if (timer) {
 				clearTimeout(timer);
 			}
 
 			timer = setTimeout(() => {
-				resolve(fn(args));
+				resolve(fn(...args));
 			}, ms);
 		});
 
