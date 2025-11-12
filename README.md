@@ -168,11 +168,8 @@ console.log(overlapping); // 3
 
 ### Type Predicates
 
-Type guard functions for runtime type checking and type narrowing:
+Type guard functions for runtime type checking and type narrowing
 
-- `isDefined` - Checks if a value is defined (not null or undefined)
-- `isInstanceOfClass` - Checks if a value is an instance of a class
-- `isOneOf` - Checks if a value is one of the allowed values
 - `isString` - Checks if a value is a string
 - `isNumber` - Checks if a value is a number
 - `isBoolean` - Checks if a value is a boolean
@@ -182,7 +179,10 @@ Type guard functions for runtime type checking and type narrowing:
 - `isObject` - Checks if a value is an object (not null)
 - `isUndefined` - Checks if a value is undefined
 - `isNull` - Checks if a value is null
-- `isNullish` - Checks if a value is null or undefined
+- `isNullish` - Checks if a value is null or undefined:
+- `isDefined` - Checks if a value is defined (not null or undefined)
+- `isInstanceOfClass` - Checks if a value is an instance of a class
+- `isOneOf` - Checks if a value is one of the allowed values
 - `isTupleOf` - Checks if an array has exactly the specified length (e.g., `isTupleOf(numbers, 2)` asserts `[number, number]`)
 - `isTupleOfAtLeast` - Checks if an array has at least the specified length (e.g., `isTupleOfAtLeast(numbers, 2)` asserts `[number, number, ...number[]]`)
 
