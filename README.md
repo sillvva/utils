@@ -8,6 +8,24 @@ A module containing general purpose utility functions and types.
 npm install @sillvva/utils
 ```
 
+## Table of Contents
+
+- [sillvva-utils](#sillvva-utils)
+  - [Installation](#installation)
+  - [Table of Contents](#table-of-contents)
+  - [Usage Examples](#usage-examples)
+    - [Abortable Promise](#abortable-promise)
+    - [Debounce](#debounce)
+    - [deepEqual](#deepequal)
+    - [JS Object Notation](#js-object-notation)
+    - [Omit](#omit)
+    - [Slugify](#slugify)
+    - [Sorter](#sorter)
+    - [Substring Count](#substring-count)
+    - [Type Predicates](#type-predicates)
+    - [Wait](#wait)
+    - [Utility Types](#utility-types)
+
 ## Usage Examples
 
 ### Abortable Promise
@@ -63,26 +81,6 @@ console.log(deepEqual(new Map([["x", 1]]), new Map([["x", 1]]))); // true
 // Not equal when structure or values differ:
 console.log(deepEqual({ foo: 1 }, { foo: 2 })); // false
 ```
-
-### Type Predicates
-
-Type guard functions for runtime type checking and type narrowing:
-
-- `isDefined` - Checks if a value is defined (not null or undefined)
-- `isInstanceOfClass` - Checks if a value is an instance of a class
-- `isOneOf` - Checks if a value is one of the allowed values
-- `isString` - Checks if a value is a string
-- `isNumber` - Checks if a value is a number
-- `isBoolean` - Checks if a value is a boolean
-- `isFunction` - Checks if a value is a function
-- `isSymbol` - Checks if a value is a symbol
-- `isBigInt` - Checks if a value is a bigint
-- `isObject` - Checks if a value is an object (not null)
-- `isUndefined` - Checks if a value is undefined
-- `isNull` - Checks if a value is null
-- `isNullish` - Checks if a value is null or undefined
-- `isTupleOf` - Checks if an array has exactly the specified length (e.g., `isTupleOf(numbers, 2)` asserts `[number, number]`)
-- `isTupleOfAtLeast` - Checks if an array has at least the specified length (e.g., `isTupleOfAtLeast(numbers, 2)` asserts `[number, number, ...number[]]`)
 
 ### JS Object Notation
 
@@ -167,6 +165,26 @@ console.log(count); // 2
 const overlapping = substrCount("aaaa", "aa", true);
 console.log(overlapping); // 3
 ```
+
+### Type Predicates
+
+Type guard functions for runtime type checking and type narrowing:
+
+- `isDefined` - Checks if a value is defined (not null or undefined)
+- `isInstanceOfClass` - Checks if a value is an instance of a class
+- `isOneOf` - Checks if a value is one of the allowed values
+- `isString` - Checks if a value is a string
+- `isNumber` - Checks if a value is a number
+- `isBoolean` - Checks if a value is a boolean
+- `isFunction` - Checks if a value is a function
+- `isSymbol` - Checks if a value is a symbol
+- `isBigInt` - Checks if a value is a bigint
+- `isObject` - Checks if a value is an object (not null)
+- `isUndefined` - Checks if a value is undefined
+- `isNull` - Checks if a value is null
+- `isNullish` - Checks if a value is null or undefined
+- `isTupleOf` - Checks if an array has exactly the specified length (e.g., `isTupleOf(numbers, 2)` asserts `[number, number]`)
+- `isTupleOfAtLeast` - Checks if an array has at least the specified length (e.g., `isTupleOfAtLeast(numbers, 2)` asserts `[number, number, ...number[]]`)
 
 ### Wait
 
