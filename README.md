@@ -122,6 +122,37 @@ function checkFruits(fruit: string) {
 }
 ```
 
+### JS Object Notation
+
+```typescript
+import { toJSObjectNotation, fromJSObjectNotation } from "@sillvva/utils";
+
+// Convert path array to notation string
+const path = ["user", "profile", "name"];
+const notation = toJSObjectNotation(path);
+console.log(notation); // "user.profile.name"
+
+// With array indices
+const path2 = ["items", 0, "title"];
+const notation2 = toJSObjectNotation(path2);
+console.log(notation2); // "items[0].title"
+
+// Special characters use bracket notation
+const path3 = ["user", "full-name", "age"];
+const notation3 = toJSObjectNotation(path3);
+console.log(notation3); // 'user["full-name"].age'
+
+// Parse notation string back to path array
+const parsed = fromJSObjectNotation("user.profile.name");
+console.log(parsed); // ["user", "profile", "name"]
+
+// Round-trip conversion
+const original = ["data", 0, "user", "email-address"];
+const notation4 = toJSObjectNotation(original);
+const parsed2 = fromJSObjectNotation(notation4);
+console.log(parsed2); // ["data", 0, "user", "email-address"]
+```
+
 ### Omit
 
 ```typescript

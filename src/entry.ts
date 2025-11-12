@@ -4,6 +4,7 @@ export * from "./deepEqual";
 export * from "./isDefined";
 export * from "./isInstanceOfClass";
 export * from "./isOneOf";
+export * from "./jsObjectNotation";
 export * from "./omit";
 export * from "./slugify";
 export * from "./sorter";
