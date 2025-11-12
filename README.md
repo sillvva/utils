@@ -64,63 +64,25 @@ console.log(deepEqual(new Map([["x", 1]]), new Map([["x", 1]]))); // true
 console.log(deepEqual({ foo: 1 }, { foo: 2 })); // false
 ```
 
-### isDefined
+### Type Predicates
 
-```typescript
-import { isDefined } from "@sillvva/utils";
+Type guard functions for runtime type checking and type narrowing:
 
-const values = [1, null, 2, undefined, 3]; // (number | null | undefined)[]
-const defined = values.filter(isDefined); // number[]
-console.log(defined); // [1, 2, 3]
-```
-
-### isInstanceOfClass
-
-```typescript
-import { isInstanceOfClass } from "@sillvva/utils";
-
-class User {
-	constructor(public name: string) {}
-}
-
-const user = new User("John");
-const plainObj = { name: "Jane" };
-
-// Check specific class
-console.log(isInstanceOfClass(user, User)); // true
-console.log(isInstanceOfClass(plainObj, User)); // false
-
-// Check for any class instance
-console.log(isInstanceOfClass(user)); // true
-console.log(isInstanceOfClass(plainObj)); // false
-
-// Type narrowing
-function processUser(data: unknown) {
-	if (isInstanceOfClass(data, User)) {
-		console.log(data.name); // TypeScript knows data is User
-	}
-}
-```
-
-### isOneOf
-
-```typescript
-import { isOneOf } from "@sillvva/utils";
-
-// before ❌
-function checkFruits(fruit: string) {
-	if (["apple", "banana", "orange"].includes(fruit)) {
-		console.log(fruit); // string
-	}
-}
-
-// after ✅
-function checkFruits(fruit: string) {
-	if (isOneOf(fruit, ["apple", "banana", "orange"])) {
-		console.log(fruit); // "apple" | "banana" | "orange"
-	}
-}
-```
+- `isDefined` - Checks if a value is defined (not null or undefined)
+- `isInstanceOfClass` - Checks if a value is an instance of a class
+- `isOneOf` - Checks if a value is one of the allowed values
+- `isString` - Checks if a value is a string
+- `isNumber` - Checks if a value is a number
+- `isBoolean` - Checks if a value is a boolean
+- `isFunction` - Checks if a value is a function
+- `isSymbol` - Checks if a value is a symbol
+- `isBigInt` - Checks if a value is a bigint
+- `isObject` - Checks if a value is an object (not null)
+- `isUndefined` - Checks if a value is undefined
+- `isNull` - Checks if a value is null
+- `isNullish` - Checks if a value is null or undefined
+- `isTupleOf` - Checks if an array has exactly the specified length (e.g., `isTupleOf(numbers, 2)` asserts `[number, number]`)
+- `isTupleOfAtLeast` - Checks if an array has at least the specified length (e.g., `isTupleOfAtLeast(numbers, 2)` asserts `[number, number, ...number[]]`)
 
 ### JS Object Notation
 
