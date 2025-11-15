@@ -179,7 +179,7 @@ Type guard functions for runtime type checking and type narrowing
 - `isObject` - Checks if a value is an object (not null)
 - `isUndefined` - Checks if a value is undefined
 - `isNull` - Checks if a value is null
-- `isNullish` - Checks if a value is null or undefined:
+- `isNullish` - Checks if a value is null or undefined
 - `isDefined` - Checks if a value is defined (not null or undefined)
 - `isInstanceOfClass` - Checks if a value is an instance of a class
 - `isOneOf` - Checks if a value is one of the allowed values
