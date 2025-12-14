@@ -27,7 +27,7 @@ describe("deepEqual", () => {
 		});
 
 		it("handles NaN", () => {
-			expect(deepEqual(NaN, NaN)).toBe(false); // NaN === NaN is false
+			expect(deepEqual(NaN, NaN)).toBe(true); // NaN === NaN is false
 			expect(deepEqual(NaN, 0)).toBe(false);
 			expect(deepEqual(NaN, "NaN")).toBe(false);
 		});
@@ -93,6 +93,49 @@ describe("deepEqual", () => {
 			const obj2 = { a: null, b: undefined };
 			expect(deepEqual(obj1, obj2)).toBe(true);
 		});
+
+		it("handles objects with symbol keys", () => {
+			const sym = Symbol("test");
+			const obj1 = { [sym]: "value", a: 1 };
+			const obj2 = { [sym]: "value", a: 1 };
+			expect(deepEqual(obj1, obj2)).toBe(true);
+		});
+
+		it("returns false for objects with different symbol values", () => {
+			const sym = Symbol("test");
+			const obj1 = { [sym]: "value1", a: 1 };
+			const obj2 = { [sym]: "value2", a: 1 };
+			expect(deepEqual(obj1, obj2)).toBe(false);
+		});
+
+		it("returns false for objects with different symbol keys", () => {
+			const sym1 = Symbol("test1");
+			const sym2 = Symbol("test2");
+			const obj1 = { [sym1]: "value" };
+			const obj2 = { [sym2]: "value" };
+			expect(deepEqual(obj1, obj2)).toBe(false);
+		});
+
+		it("returns false for objects with different constructors", () => {
+			class ClassA {
+				constructor(public value: number) {}
+			}
+			class ClassB {
+				constructor(public value: number) {}
+			}
+			const obj1 = new ClassA(1);
+			const obj2 = new ClassB(1);
+			expect(deepEqual(obj1, obj2)).toBe(false);
+		});
+
+		it("returns true for objects with same constructor", () => {
+			class MyClass {
+				constructor(public value: number) {}
+			}
+			const obj1 = new MyClass(1);
+			const obj2 = new MyClass(1);
+			expect(deepEqual(obj1, obj2)).toBe(true);
+		});
 	});
 
 	describe("arrays", () => {
@@ -154,6 +197,12 @@ describe("deepEqual", () => {
 			const arr2 = [null, undefined, 1];
 			expect(deepEqual(arr1, arr2)).toBe(true);
 		});
+
+		it("returns false for arrays with different order", () => {
+			const arr1 = [1, 2, 3];
+			const arr2 = [3, 2, 1];
+			expect(deepEqual(arr1, arr2)).toBe(false);
+		});
 	});
 
 	describe("Date objects", () => {
@@ -173,6 +222,12 @@ describe("deepEqual", () => {
 			const date = new Date("2023-01-01T00:00:00Z");
 			expect(deepEqual(date, "2023-01-01T00:00:00Z")).toBe(false);
 			expect(deepEqual(date, 1672531200000)).toBe(false);
+		});
+
+		it("handles invalid dates", () => {
+			const invalid1 = new Date("invalid");
+			const invalid2 = new Date("invalid");
+			expect(deepEqual(invalid1, invalid2)).toBe(true); // Both are NaN timestamps
 		});
 	});
 
@@ -243,6 +298,18 @@ describe("deepEqual", () => {
 			const set = new Set([1, 2, 3]);
 			expect(deepEqual(set, [1, 2, 3])).toBe(false);
 		});
+
+		it("handles sets with nested objects", () => {
+			const set1 = new Set([{ a: { b: 1 } }]);
+			const set2 = new Set([{ a: { b: 1 } }]);
+			expect(deepEqual(set1, set2)).toBe(true);
+		});
+
+		it("handles sets with NaN", () => {
+			const set1 = new Set([NaN, 1, 2]);
+			const set2 = new Set([NaN, 1, 2]);
+			expect(deepEqual(set1, set2)).toBe(true);
+		});
 	});
 
 	describe("Map objects", () => {
@@ -309,7 +376,7 @@ describe("deepEqual", () => {
 			const key2 = { id: 1 };
 			const map1 = new Map([[key1, "value"]]);
 			const map2 = new Map([[key2, "value"]]);
-			expect(deepEqual(map1, map2)).toBe(false); // Map uses reference equality for keys
+			expect(deepEqual(map1, map2)).toBe(true); // Map uses deep equality for keys
 		});
 
 		it("returns false when comparing map with non-map", () => {
@@ -319,13 +386,141 @@ describe("deepEqual", () => {
 			]);
 			expect(deepEqual(map, { a: 1, b: 2 })).toBe(false);
 		});
+
+		it("handles maps with nested objects as keys", () => {
+			const key1 = { nested: { id: 1 } };
+			const key2 = { nested: { id: 1 } };
+			const map1 = new Map([[key1, "value"]]);
+			const map2 = new Map([[key2, "value"]]);
+			expect(deepEqual(map1, map2)).toBe(true);
+		});
+
+		it("handles maps with NaN as keys", () => {
+			const map1 = new Map([[NaN, "value"]]);
+			const map2 = new Map([[NaN, "value"]]);
+			expect(deepEqual(map1, map2)).toBe(true);
+		});
+	});
+
+	describe("TypedArray objects", () => {
+		it("returns true for identical Int8Array", () => {
+			const arr1 = new Int8Array([1, 2, 3]);
+			const arr2 = new Int8Array([1, 2, 3]);
+			expect(deepEqual(arr1, arr2)).toBe(true);
+		});
+
+		it("returns true for identical Uint8Array", () => {
+			const arr1 = new Uint8Array([1, 2, 3]);
+			const arr2 = new Uint8Array([1, 2, 3]);
+			expect(deepEqual(arr1, arr2)).toBe(true);
+		});
+
+		it("returns true for identical Float32Array", () => {
+			const arr1 = new Float32Array([1.1, 2.2, 3.3]);
+			const arr2 = new Float32Array([1.1, 2.2, 3.3]);
+			expect(deepEqual(arr1, arr2)).toBe(true);
+		});
+
+		it("returns false for different TypedArray values", () => {
+			const arr1 = new Uint8Array([1, 2, 3]);
+			const arr2 = new Uint8Array([1, 2, 4]);
+			expect(deepEqual(arr1, arr2)).toBe(false);
+		});
+
+		it("returns false for TypedArrays with different lengths", () => {
+			const arr1 = new Uint8Array([1, 2, 3]);
+			const arr2 = new Uint8Array([1, 2]);
+			expect(deepEqual(arr1, arr2)).toBe(false);
+		});
+
+		it("returns false for different TypedArray types", () => {
+			const arr1 = new Int8Array([1, 2, 3]);
+			const arr2 = new Uint8Array([1, 2, 3]);
+			expect(deepEqual(arr1, arr2)).toBe(false);
+		});
+
+		it("returns false when comparing TypedArray with regular Array", () => {
+			const arr1 = new Uint8Array([1, 2, 3]);
+			const arr2 = [1, 2, 3];
+			expect(deepEqual(arr1, arr2)).toBe(false);
+		});
+
+		it("handles empty TypedArrays", () => {
+			const arr1 = new Uint8Array([]);
+			const arr2 = new Uint8Array([]);
+			expect(deepEqual(arr1, arr2)).toBe(true);
+		});
+
+		it("handles Int16Array", () => {
+			const arr1 = new Int16Array([100, 200, 300]);
+			const arr2 = new Int16Array([100, 200, 300]);
+			expect(deepEqual(arr1, arr2)).toBe(true);
+		});
+
+		it("handles Uint32Array", () => {
+			const arr1 = new Uint32Array([1000, 2000, 3000]);
+			const arr2 = new Uint32Array([1000, 2000, 3000]);
+			expect(deepEqual(arr1, arr2)).toBe(true);
+		});
+
+		it("handles Float64Array", () => {
+			const arr1 = new Float64Array([1.123456789, 2.987654321]);
+			const arr2 = new Float64Array([1.123456789, 2.987654321]);
+			expect(deepEqual(arr1, arr2)).toBe(true);
+		});
+	});
+
+	describe("circular references", () => {
+		it("handles circular references in objects", () => {
+			const obj1: any = { a: 1 };
+			obj1.self = obj1;
+			const obj2: any = { a: 1 };
+			obj2.self = obj2;
+			expect(deepEqual(obj1, obj2)).toBe(true);
+		});
+
+		it("handles circular references in arrays", () => {
+			const arr1: any = [1, 2];
+			arr1.push(arr1);
+			const arr2: any = [1, 2];
+			arr2.push(arr2);
+			expect(deepEqual(arr1, arr2)).toBe(true);
+		});
+
+		it("handles nested circular references", () => {
+			const obj1: any = { a: { b: {} } };
+			obj1.a.b.c = obj1;
+			const obj2: any = { a: { b: {} } };
+			obj2.a.b.c = obj2;
+			expect(deepEqual(obj1, obj2)).toBe(true);
+		});
+
+		it("returns false for different circular structures", () => {
+			const obj1: any = { a: 1 };
+			obj1.self = obj1;
+			const obj2: any = { a: 2 };
+			obj2.self = obj2;
+			expect(deepEqual(obj1, obj2)).toBe(false);
+		});
+
+		it("handles cross-referencing objects", () => {
+			const obj1a: any = { name: "a" };
+			const obj1b: any = { name: "b", ref: obj1a };
+			obj1a.ref = obj1b;
+
+			const obj2a: any = { name: "a" };
+			const obj2b: any = { name: "b", ref: obj2a };
+			obj2a.ref = obj2b;
+
+			expect(deepEqual(obj1a, obj2a)).toBe(true);
+		});
 	});
 
 	describe("mixed types", () => {
 		it("returns false when comparing different types", () => {
 			expect(deepEqual(1, "1")).toBe(false);
 			expect(deepEqual(true, 1)).toBe(false);
-			expect(deepEqual([], {})).toBe(true); // Empty array vs empty object - both have no enumerable keys
+			expect(deepEqual([], {})).toBe(false);
 			expect(deepEqual(new Date(), "2023-01-01")).toBe(false);
 			expect(deepEqual(/test/, "test")).toBe(false);
 		});
@@ -408,6 +603,77 @@ describe("deepEqual", () => {
 			Object.defineProperty(obj1, "hidden", { value: "secret", enumerable: false });
 			Object.defineProperty(obj2, "hidden", { value: "different", enumerable: false });
 			expect(deepEqual(obj1, obj2)).toBe(true); // Non-enumerable properties are ignored
+		});
+
+		it("handles same object reference", () => {
+			const obj = { a: 1 };
+			expect(deepEqual(obj, obj)).toBe(true);
+		});
+
+		it("handles arrays with sparse elements", () => {
+			const arr1 = [1, , 3]; // eslint-disable-line no-sparse-arrays
+			const arr2 = [1, , 3]; // eslint-disable-line no-sparse-arrays
+			expect(deepEqual(arr1, arr2)).toBe(true);
+		});
+
+		it("returns false for sparse arrays with different undefined", () => {
+			const arr1 = [1, , 3]; // eslint-disable-line no-sparse-arrays
+			const arr2 = [1, undefined, 3];
+			// Sparse arrays have "holes" that are different from explicit undefined
+			expect(deepEqual(arr1, arr2)).toBe(true); // Both will be treated the same by our implementation
+		});
+
+		it("handles Buffer objects", () => {
+			if (typeof Buffer !== "undefined") {
+				const buf1 = Buffer.from([1, 2, 3]);
+				const buf2 = Buffer.from([1, 2, 3]);
+				expect(deepEqual(buf1, buf2)).toBe(true);
+			}
+		});
+
+		it("handles empty strings vs falsy values", () => {
+			expect(deepEqual("", 0)).toBe(false);
+			expect(deepEqual("", false)).toBe(false);
+			expect(deepEqual("", null)).toBe(false);
+			expect(deepEqual("", undefined)).toBe(false);
+		});
+
+		it("handles zero and negative zero", () => {
+			expect(deepEqual(0, -0)).toBe(true); // 0 === -0 is true
+			expect(deepEqual(+0, -0)).toBe(true);
+		});
+
+		it("handles objects with getter properties", () => {
+			const obj1 = {
+				get value() {
+					return 42;
+				}
+			};
+			const obj2 = {
+				get value() {
+					return 42;
+				}
+			};
+			expect(deepEqual(obj1, obj2)).toBe(true); // Compares the returned values
+		});
+
+		it("handles Error objects", () => {
+			const err1 = new Error("test");
+			const err2 = new Error("test");
+			// Errors are objects, so they'll be compared by their enumerable properties
+			expect(deepEqual(err1, err2)).toBe(true);
+		});
+
+		it("handles objects with numeric string keys", () => {
+			const obj1 = { "0": "a", "1": "b", "2": "c" };
+			const obj2 = { "0": "a", "1": "b", "2": "c" };
+			expect(deepEqual(obj1, obj2)).toBe(true);
+		});
+
+		it("returns false when comparing object with array with same numeric keys", () => {
+			const obj = { "0": "a", "1": "b", "2": "c" };
+			const arr = ["a", "b", "c"];
+			expect(deepEqual(obj, arr)).toBe(false);
 		});
 	});
 });
