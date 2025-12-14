@@ -15,7 +15,7 @@
  * @param seen - Internal WeakMap for circular reference detection
  * @returns true if values are deeply equal, false otherwise
  */
-export function deepEqual(a: unknown, b: unknown, seen = new WeakMap()): boolean {
+export function deepEqual(a: unknown, b: unknown, seen: WeakMap<object, unknown> = new WeakMap()): boolean {
 	// Identical reference or primitive equality
 	if (a === b) return true;
 
