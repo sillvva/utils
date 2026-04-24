@@ -567,12 +567,14 @@ describe("deepEqual", () => {
 			const fn1 = () => {};
 			const fn2 = () => {};
 			expect(deepEqual(fn1, fn2)).toBe(false); // Functions are compared by reference
+			expect(deepEqual(fn1, fn1)).toBe(true);
 		});
 
 		it("handles symbols", () => {
 			const sym1 = Symbol("test");
 			const sym2 = Symbol("test");
 			expect(deepEqual(sym1, sym2)).toBe(false); // Symbols are compared by reference
+			expect(deepEqual(sym1, sym1)).toBe(true);
 		});
 
 		it("handles BigInt", () => {
