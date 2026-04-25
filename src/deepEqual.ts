@@ -96,10 +96,14 @@ export function deepEqual(a: unknown, b: unknown, seen: WeakMap<object, unknown>
 		return true;
 	}
 
-	// Array comparison
+	// Array comparison (distinguish holes from own properties, e.g. [1, , 3] vs [1, undefined, 3])
 	if (Array.isArray(a) && Array.isArray(b)) {
 		if (a.length !== b.length) return false;
 		for (let i = 0; i < a.length; i++) {
+			const aHole = !Object.hasOwn(a, i);
+			const bHole = !Object.hasOwn(b, i);
+			if (aHole && bHole) continue;
+			if (aHole !== bHole) return false;
 			if (!deepEqual(a[i], b[i], seen)) return false;
 		}
 		return true;

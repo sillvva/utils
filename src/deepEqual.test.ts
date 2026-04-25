@@ -621,8 +621,8 @@ describe("deepEqual", () => {
 		it("returns false for sparse arrays with different undefined", () => {
 			const arr1 = [1, , 3]; // eslint-disable-line no-sparse-arrays
 			const arr2 = [1, undefined, 3];
-			// Sparse arrays have "holes" that are different from explicit undefined
-			expect(deepEqual(arr1, arr2)).toBe(true); // Both will be treated the same by our implementation
+			// Sparse holes are not the same as an own property with value undefined
+			expect(deepEqual(arr1, arr2)).toBe(false);
 		});
 
 		it("handles Buffer objects", () => {
