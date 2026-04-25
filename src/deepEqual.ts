@@ -12,10 +12,13 @@
  *
  * @param a - First value to compare
  * @param b - Second value to compare
- * @param seen - Internal WeakMap for circular reference detection
  * @returns true if values are deeply equal, false otherwise
  */
-export function deepEqual(a: unknown, b: unknown, seen: WeakMap<object, unknown> = new WeakMap()): boolean {
+export function deepEqual(a: unknown, b: unknown): boolean {
+	return deepEqualImpl(a, b, new WeakMap());
+}
+
+function deepEqualImpl(a: unknown, b: unknown, seen: WeakMap<object, unknown>): boolean {
 	// Identical reference or primitive equality
 	if (a === b) return true;
 
@@ -67,7 +70,7 @@ export function deepEqual(a: unknown, b: unknown, seen: WeakMap<object, unknown>
 		for (const aItem of a) {
 			let found = false;
 			for (const bItem of b) {
-				if (deepEqual(aItem, bItem, seen)) {
+				if (deepEqualImpl(aItem, bItem, seen)) {
 					found = true;
 					break;
 				}
@@ -85,8 +88,8 @@ export function deepEqual(a: unknown, b: unknown, seen: WeakMap<object, unknown>
 		for (const [keyA, valA] of a) {
 			let foundKey = false;
 			for (const [keyB, valB] of b) {
-				if (deepEqual(keyA, keyB, seen)) {
-					if (!deepEqual(valA, valB, seen)) return false;
+				if (deepEqualImpl(keyA, keyB, seen)) {
+					if (!deepEqualImpl(valA, valB, seen)) return false;
 					foundKey = true;
 					break;
 				}
@@ -104,7 +107,7 @@ export function deepEqual(a: unknown, b: unknown, seen: WeakMap<object, unknown>
 			const bHole = !Object.hasOwn(b, i);
 			if (aHole && bHole) continue;
 			if (aHole !== bHole) return false;
-			if (!deepEqual(a[i], b[i], seen)) return false;
+			if (!deepEqualImpl(a[i], b[i], seen)) return false;
 		}
 		return true;
 	}
@@ -126,7 +129,7 @@ export function deepEqual(a: unknown, b: unknown, seen: WeakMap<object, unknown>
 			const valA = (a as Record<string, unknown>)[key];
 			const valB = (b as Record<string, unknown>)[key];
 
-			if (!deepEqual(valA, valB, seen)) return false;
+			if (!deepEqualImpl(valA, valB, seen)) return false;
 		}
 
 		// Check Symbol keys
@@ -141,7 +144,7 @@ export function deepEqual(a: unknown, b: unknown, seen: WeakMap<object, unknown>
 			const valA = (a as Record<symbol, unknown>)[sym];
 			const valB = (b as Record<symbol, unknown>)[sym];
 
-			if (!deepEqual(valA, valB, seen)) return false;
+			if (!deepEqualImpl(valA, valB, seen)) return false;
 		}
 
 		return true;
