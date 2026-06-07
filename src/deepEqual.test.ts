@@ -1,3 +1,5 @@
+import * as vm from "node:vm";
+
 import { deepEqual } from "./deepEqual";
 
 describe("deepEqual", () => {
@@ -228,6 +230,19 @@ describe("deepEqual", () => {
 			const invalid1 = new Date("invalid");
 			const invalid2 = new Date("invalid");
 			expect(deepEqual(invalid1, invalid2)).toBe(true); // Both are NaN timestamps
+		});
+
+		it("handles ArrayBuffers and DataViews", () => {
+			const buffer1 = new ArrayBuffer(4);
+			const buffer2 = new ArrayBuffer(4);
+			new Uint8Array(buffer1).set([1, 2, 3, 4]);
+			new Uint8Array(buffer2).set([1, 2, 3, 4]);
+
+			expect(deepEqual(buffer1, buffer2)).toBe(true);
+			expect(deepEqual(new DataView(buffer1), new DataView(buffer2))).toBe(true);
+
+			new Uint8Array(buffer2)[3] = 5;
+			expect(deepEqual(buffer1, buffer2)).toBe(false);
 		});
 	});
 
@@ -468,6 +483,15 @@ describe("deepEqual", () => {
 			const arr2 = new Float64Array([1.123456789, 2.987654321]);
 			expect(deepEqual(arr1, arr2)).toBe(true);
 		});
+
+		it("handles typed array slices with offsets", () => {
+			const base1 = new Uint8Array([0, 1, 2, 3, 4]);
+			const base2 = new Uint8Array([9, 1, 2, 3, 8]);
+			const arr1 = base1.subarray(1, 4);
+			const arr2 = base2.subarray(1, 4);
+
+			expect(deepEqual(arr1, arr2)).toBe(true);
+		});
 	});
 
 	describe("circular references", () => {
@@ -662,8 +686,11 @@ describe("deepEqual", () => {
 		it("handles Error objects", () => {
 			const err1 = new Error("test");
 			const err2 = new Error("test");
-			// Errors are objects, so they'll be compared by their enumerable properties
 			expect(deepEqual(err1, err2)).toBe(true);
+		});
+
+		it("returns false for different Error messages", () => {
+			expect(deepEqual(new Error("test-1"), new Error("test-2"))).toBe(false);
 		});
 
 		it("handles objects with numeric string keys", () => {
@@ -676,6 +703,48 @@ describe("deepEqual", () => {
 			const obj = { "0": "a", "1": "b", "2": "c" };
 			const arr = ["a", "b", "c"];
 			expect(deepEqual(obj, arr)).toBe(false);
+		});
+
+		it("supports cross-realm objects when enabled", () => {
+			const context = vm.createContext({});
+			const crossRealmObject = vm.runInContext("({ a: 1, b: [2, 3] })", context) as { a: number; b: number[] };
+			const localObject = { a: 1, b: [2, 3] };
+
+			expect(deepEqual(crossRealmObject, localObject)).toBe(false);
+			expect(deepEqual(crossRealmObject, localObject, { crossRealm: true })).toBe(true);
+		});
+
+		it("supports React elements when enabled", () => {
+			const reactType = Symbol.for("react.element");
+			const element1 = {
+				$$typeof: reactType,
+				type: "div",
+				key: null,
+				ref: null,
+				props: { children: "hello" },
+				_owner: { id: 1 }
+			};
+			const element2 = {
+				$$typeof: reactType,
+				type: "div",
+				key: null,
+				ref: null,
+				props: { children: "hello" },
+				_owner: { id: 2 }
+			};
+
+			expect(deepEqual(element1, element2)).toBe(false);
+			expect(deepEqual(element1, element2, { reactElements: true })).toBe(true);
+		});
+
+		it("treats full as the widest comparison mode", () => {
+			const obj1 = { a: 1 };
+			const obj2 = { a: 1 };
+			Object.defineProperty(obj1, "hidden", { value: "secret", enumerable: false });
+			Object.defineProperty(obj2, "hidden", { value: "different", enumerable: false });
+
+			expect(deepEqual(obj1, obj2)).toBe(true);
+			expect(deepEqual(obj1, obj2, { full: true })).toBe(false);
 		});
 	});
 });

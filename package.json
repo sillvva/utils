@@ -1,6 +1,6 @@
 {
 	"name": "@sillvva/utils",
-	"version": "0.8.5",
+	"version": "0.9.0",
 	"description": "A module containing general purpose utility functions and types.",
 	"author": "Matt DeKok",
 	"license": "MIT",
@@ -36,6 +36,7 @@
 	],
 	"devDependencies": {
 		"@types/jest": "^30.0.0",
+		"@types/node": "^25.9.2",
 		"jest": "^30.0.4",
 		"ts-jest": "^29.4.0",
 		"tsup": "^8.5.0"
