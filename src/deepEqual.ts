@@ -3,6 +3,21 @@
  * Handles primitives, objects, arrays, dates, RegExp, Sets, Maps, ArrayBuffers,
  * typed arrays, DataViews, errors, NaN, and circular references.
  *
+ * Options:
+ * - `full` (default: false): Enables the widest comparison mode and turns on all options below.
+ * - `circular` (default: false): Tracks previously visited object pairs to support circular references.
+ * - `crossRealm` (default: false): Allows equality across different realms when constructors differ.
+ * - `reactElements` (default: false): Uses React element semantics and ignores non-standard fields (for example, _owner).
+ * - `compareSymbols` (default: true): Includes symbol keys in object key comparison.
+ * - `compareNonEnumerable` (default: false): Includes non-enumerable own properties.
+ * - `compareDescriptors` (default: false): Compares property descriptor attributes (enumerable/configurable/writable/get/set).
+ * - `compareMaps` (default: false): Compares Map entries using deep comparison for keys and values.
+ * - `compareSets` (default: false): Compares Set contents using deep comparison.
+ * - `compareArrayBuffers` (default: false): Compares ArrayBuffer/SharedArrayBuffer byte content.
+ * - `compareTypedArrays` (default: false): Compares typed array and Buffer byte content.
+ * - `compareDataViews` (default: false): Compares DataView byte content.
+ * - `compareErrors` (default: false): Compares Error-like values by name/message/cause/errors and own properties.
+ *
  * @example Basic usage
  * import { deepEqual } from "@sillvva/utils";
  *
@@ -15,9 +30,15 @@
  *
  * @param a - First value to compare
  * @param b - Second value to compare
- * @param options - Comparison options
+ * @param options - Optional comparison settings. By default, plain object/array comparison is optimized for performance.
  * @returns true if values are deeply equal, false otherwise
  */
+export function deepEqual(a: unknown, b: unknown, options: DeepEqualOptions = {}): boolean {
+	const resolvedOptions = resolveOptions(options);
+	const seen = resolvedOptions.circular ? new WeakMap<object, WeakSet<object>>() : undefined;
+	return deepEqualImpl(a, b, resolvedOptions, seen);
+}
+
 export interface DeepEqualOptions {
 	full?: boolean;
 	circular?: boolean;
@@ -67,12 +88,6 @@ interface ErrorLike {
 const REACT_ELEMENT_TYPE = Symbol.for("react.element");
 const OBJECT_TO_STRING = Object.prototype.toString;
 const ENGINE = detectEngine();
-
-export function deepEqual(a: unknown, b: unknown, options: DeepEqualOptions = {}): boolean {
-	const resolvedOptions = resolveOptions(options);
-	const seen = resolvedOptions.circular ? new WeakMap<object, WeakSet<object>>() : undefined;
-	return deepEqualImpl(a, b, resolvedOptions, seen);
-}
 
 function deepEqualImpl(a: unknown, b: unknown, options: ResolvedDeepEqualOptions, seen: WeakMap<object, WeakSet<object>> | undefined): boolean {
 	if (a === b) return true;
@@ -154,18 +169,18 @@ function resolveOptions(options: DeepEqualOptions): ResolvedDeepEqualOptions {
 	const resolve = (value: boolean | undefined, fallback: boolean): boolean => (full ? true : (value ?? fallback));
 
 	return {
-		circular: resolve(options.circular, true),
+		circular: resolve(options.circular, false),
 		crossRealm: resolve(options.crossRealm, false),
 		reactElements: resolve(options.reactElements, false),
 		compareSymbols: resolve(options.compareSymbols, true),
 		compareNonEnumerable: resolve(options.compareNonEnumerable, false),
 		compareDescriptors: resolve(options.compareDescriptors, false),
-		compareMaps: resolve(options.compareMaps, true),
-		compareSets: resolve(options.compareSets, true),
-		compareArrayBuffers: resolve(options.compareArrayBuffers, true),
-		compareTypedArrays: resolve(options.compareTypedArrays, true),
-		compareDataViews: resolve(options.compareDataViews, true),
-		compareErrors: resolve(options.compareErrors, true),
+		compareMaps: resolve(options.compareMaps, false),
+		compareSets: resolve(options.compareSets, false),
+		compareArrayBuffers: resolve(options.compareArrayBuffers, false),
+		compareTypedArrays: resolve(options.compareTypedArrays, false),
+		compareDataViews: resolve(options.compareDataViews, false),
+		compareErrors: resolve(options.compareErrors, false)
 	};
 }
 
@@ -173,7 +188,7 @@ function compareArrays(
 	a: readonly unknown[],
 	b: readonly unknown[],
 	options: ResolvedDeepEqualOptions,
-	seen: WeakMap<object, WeakSet<object>> | undefined,
+	seen: WeakMap<object, WeakSet<object>> | undefined
 ): boolean {
 	if (a.length !== b.length) return false;
 
@@ -192,7 +207,7 @@ function compareSets(
 	a: Set<unknown>,
 	b: Set<unknown>,
 	options: ResolvedDeepEqualOptions,
-	seen: WeakMap<object, WeakSet<object>> | undefined,
+	seen: WeakMap<object, WeakSet<object>> | undefined
 ): boolean {
 	if (a.size !== b.size) return false;
 
@@ -219,7 +234,7 @@ function compareMaps(
 	a: Map<unknown, unknown>,
 	b: Map<unknown, unknown>,
 	options: ResolvedDeepEqualOptions,
-	seen: WeakMap<object, WeakSet<object>> | undefined,
+	seen: WeakMap<object, WeakSet<object>> | undefined
 ): boolean {
 	if (a.size !== b.size) return false;
 
@@ -342,7 +357,7 @@ function compareReactElements(
 	a: ReactElementLike,
 	b: ReactElementLike,
 	options: ResolvedDeepEqualOptions,
-	seen: WeakMap<object, WeakSet<object>> | undefined,
+	seen: WeakMap<object, WeakSet<object>> | undefined
 ): boolean {
 	return (
 		a.$$typeof === b.$$typeof &&
@@ -357,7 +372,7 @@ function compareObjects(
 	a: Record<PropertyKey, unknown>,
 	b: Record<PropertyKey, unknown>,
 	options: ResolvedDeepEqualOptions,
-	seen: WeakMap<object, WeakSet<object>> | undefined,
+	seen: WeakMap<object, WeakSet<object>> | undefined
 ): boolean {
 	const keysA = getOwnKeys(a, options);
 	const keysB = getOwnKeys(b, options);
