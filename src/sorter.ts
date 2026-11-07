@@ -5,7 +5,7 @@
 
 /**
  */
-const collator: Intl.Collator = new Intl.Collator("en", { numeric: true, sensitivity: "base" });
+const collator: Intl.Collator = new Intl.Collator("en");
 /**
  * Represents a type that can be sorted.
  * @typedef {string | number | boolean | Date | null} Sortable
@@ -19,10 +19,10 @@ type Sortable = string | number | boolean | Date | null;
  * @returns {number} A negative number if `a` is less than `b`, a positive number if `a` is greater than `b`, or zero if they are equal.
  *
  * @example Sorting primitives
- * const fruits = ["apple", "Banana", "Orange", "banana"];
+ * const fruits = ["apple", "Banana", "orange", "banana"];
  * const sorted = fruits.toSorted(sorter);
- * console.log(sorted); // ["apple", "banana", "Banana", "Orange"]
- * 
+ * console.log(sorted); // ["apple", "banana", "Banana", "orange"]
+ *
  * @example Sorting objects
  * const arrObjs = [{ id: 3 }, { id: 1 }, { id: 2 }];
  * const sortedObjs = arrObjs.toSorted((a, b) => sorter(a.id, b.id));
@@ -36,5 +36,6 @@ export function sorter(a?: Sortable, b?: Sortable): number {
 	if (b === null || b === undefined || typeof b === "boolean") b = !!b ? 0 : Infinity;
 	if (a instanceof Date) a = a.getTime();
 	if (b instanceof Date) b = b.getTime();
+	if (typeof a === "number" && typeof b === "number") return a - b;
 	return collator.compare(a.toString(), b.toString());
 }
